@@ -214,7 +214,7 @@ public class abm_gui extends JFrame {
         JPanel pathABM = new JPanel();
         pathABM.setLayout(new FlowLayout());
         cp.add(pathABM);
-        pathABM.add(new JLabel("Path to model"));
+        pathABM.add(new JLabel("Path to runSimulation"));
         abmPath = new JTextArea(2, 40);
         abmButton = new JButton("Find path");
         pathABM.add(new JScrollPane(abmPath)) ;
