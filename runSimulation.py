@@ -1,4 +1,4 @@
-from main import Main
+from mainClass import Main
 import sys
 import ast
 import matplotlib.pyplot as plt
@@ -8,7 +8,6 @@ import numpy as np
 import pylab as pl
 import statistics
 import matplotlib.colorbar as cbar
-from Plotting_functions import *
 from os import sep
 from scipy.signal import savgol_filter
 from scipy.stats import linregress
@@ -63,8 +62,8 @@ def f():
 		nestmates_vel = 0
 		nest_depth = 45
 		nest_height = 1
-		troph = "Deterministic"
-		move = "Deterministic"
+		troph = "Stochastic"
+		move = "Stochastic"
 		lag_len = 1
 		nestmate_bias = False
 		nestmate_int_rate = 0
@@ -109,12 +108,12 @@ def f():
 
 
 
-	print("Everything is working, yay, now to celebrate!")
-	print('save is {}'.format(save))
-	print('steps is {}'.format(steps))
-	print("nestmates are inhert: {}".format(inactive_nestmate))
-	print("nest is shuffled: {}".format(shuffle_at_exit))
-	print("step sizes: {}".format(step_sizes))
+	# print("Everything is working, yay, now to celebrate!")
+	# print('save is {}'.format(save))
+	# print('steps is {}'.format(steps))
+	# print("nestmates are inhert: {}".format(inactive_nestmate))
+	# print("nest is shuffled: {}".format(shuffle_at_exit))
+	# print("step sizes: {}".format(step_sizes))
 	a = Main(steps=steps, inertia=inertia, f_inertial_force=forward_inertia,
 			 b_inertial_force=backward_inertia, bias_above=bias_above,
 			 bias_below=bias_below, step_sizes=step_sizes,
@@ -138,7 +137,7 @@ def f():
 
 	# print('after instantiation')
 	if save:
-		print('saving here')
+		# print('saving here')
 		step.to_csv(save+sep +'{}_step_data.csv'.format(file_name))
 		forag.to_csv(save +sep+'{}_forag_data.csv'.format(file_name))
 		visit.to_csv(save +sep+'{}_visit_data.csv'.format(file_name))

@@ -25,17 +25,20 @@ class Animate:
 		self.save_name = save_name
 		self.ant = ant
 		self.validate()
-		self.fig, self.ax = plt.subplots(figsize=(25,5))
-		normal = pl.Normalize(0, 1)
-		self.cax, _ = cbar.make_axes(self.ax)
-		self.cb2 = cbar.ColorbarBase(self.cax, cmap=cmap, norm=normal)
 
 		if re.search("[$.](.+)", self._df_file).group(1) == 'csv':
 			self.df = pd.read_csv(self._df_file)
 		elif re.search("[$.](.+)", self._df_file).group(1) in ['xls', 'xlsx', 'xlsm', 'xlsb']:
-			self.df = pd.read_excel(self._df_file)
+			self.df = pd.excel_read(self._df_file)
 
-		self.repeat_df = self.df[self.df.id <=23]
+
+		self.fig, self.ax = plt.subplots(figsize=(max(self.df.position)+3,5))
+		normal = pl.Normalize(0, 1)
+		self.cax, _ = cbar.make_axes(self.ax)
+		self.cb2 = cbar.ColorbarBase(self.cax, cmap=cmap, norm=normal)
+
+		# self.repeat_df = self.df[self.df.id <=23]
+		self.repeat_df = self.df
 		# self.repeat = int(input("Which repeat to animate? "))
 		# self.repeat_df = self.df[self.df.repeat == self.repeat]
 
@@ -56,13 +59,13 @@ class Animate:
 		if self.save_name:
 			ani = animation.FuncAnimation(
 			    # self.fig, self.__animate_repeat, interval=1, frames=max(self.repeat_df.step))
-			    self.fig, self.__animate_repeat, interval=1, frames=(500))
+			    self.fig, self.__animate_repeat, interval=1, frames=(50))
 
 			ani.save(self.save_name, writer=writer)
 
 		else:
 			for i in range(10):
-				self.fig, self.ax = plt.subplots(figsize=(41,5))
+				self.fig, self.ax = plt.subplots(figsize=(max(self.df.position),5))
 				normal = pl.Normalize(0, 1)
 				self.cax, _ = cbar.make_axes(self.ax)
 				self.cb2 = cbar.ColorbarBase(self.cax, cmap=cmap, norm=normal)

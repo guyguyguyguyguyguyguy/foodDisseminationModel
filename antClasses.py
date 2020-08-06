@@ -2,9 +2,9 @@ import copy
 import random
 from mesa import Agent
 import itertools
-from Inspect import Inspectable
+from inspectClass import Inspectable
 import uuid
-import helper_functions as hf
+import helperFunctions as hf
 import numpy as np
 
 # 'Abstract' ant class

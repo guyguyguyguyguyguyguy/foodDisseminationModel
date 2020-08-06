@@ -1,13 +1,14 @@
 from mesa import Model
 from mesa.time import RandomActivation
 from mesa.space import MultiGrid
-from mesa.datacollection import DataCollector
-from helper_functions import *
-from FoodAgent import Ant, Forager, Nestmate
-from Inspect import Inspectable
+# from mesa.datacollection import DataCollector
+from dataCollection import modDataCollector
+from helperFunctions import *
+from antClasses import Ant, Forager, Nestmate
+from inspectClass import Inspectable
 import random
-from Validator import *
-from DataCollection_functions import *
+from validatorClass import *
+from dataCollection import *
 
 
 # Model 'abstract' class
@@ -181,7 +182,7 @@ class BaseModel(Model, Inspectable):
     def initialize_step_data_collector(self):
         model_reporters = self.set_step_model_reporters()
         agent_reporters = self.set_step_agent_reporters()
-        self.step_data_collector = DataCollector(
+        self.step_data_collector = modDataCollector(
             model_reporters=model_reporters,
             agent_reporters=agent_reporters)
 
@@ -196,7 +197,7 @@ class BaseModel(Model, Inspectable):
     def initialize_visit_data_collector(self):
         model_reporters = self.set_visit_model_reporters()
         agent_reporters = self.set_visit_agent_reporters()
-        self.visit_data_collector = DataCollector(
+        self.visit_data_collector = modDataCollector(
             model_reporters=model_reporters,
             agent_reporters=agent_reporters)
 
@@ -211,7 +212,7 @@ class BaseModel(Model, Inspectable):
     def initialize_interaction_data_collector(self):
         model_reporters = self.set_interaction_model_reporters()
         agent_reporters = self.set_interaction_agent_reporters()
-        self.interaction_data_collector = DataCollector(
+        self.interaction_data_collector = modDataCollector(
             model_reporters=model_reporters,
             agent_reporters=agent_reporters)
 
@@ -226,7 +227,7 @@ class BaseModel(Model, Inspectable):
     def initialize_forager_data_collector(self):
         model_reporters = self.set_forager_model_reporters()
         agent_reporters = self.set_forager_agent_reporters()
-        self.forager_data_collector = DataCollector(
+        self.forager_data_collector = modDataCollector(
             model_reporters=model_reporters,
             agent_reporters=agent_reporters)
     #endregion
@@ -270,6 +271,9 @@ class BaseModel(Model, Inspectable):
             self.interaction_data_collector.collect(self)
 
         self.model_step += 1
+        if self.inert_nestants:
+            for agent in self.agents:
+                agent.agent_step += 1
         self.schedule.step()
 
 

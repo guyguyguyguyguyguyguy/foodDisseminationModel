@@ -1,9 +1,9 @@
-from AgentMethods import *
-from FoodModel import *
+from antMethodsClasses import *
+from modelClasses import *
 import os
 import pandas as pd
 import time
-from helper_functions import *
+from helperFunctions import *
 from multiprocessing import Pool
 import itertools
 
@@ -172,7 +172,6 @@ class Main:
             #                                propagate_food, max_steps, deployment, ants_homogenise, nestmates_can_move, lag_legnth, diff_test,
             #                                full_nest_ants, interaction_rate, i+1, self.verbose, self.space_test, self.nestmate_bias,
             #                                self.inert_nestants))
-
 
 
             if not self.two_d:
