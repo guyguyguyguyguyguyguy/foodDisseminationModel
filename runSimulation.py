@@ -12,7 +12,10 @@ from os import sep
 from scipy.signal import savgol_filter
 from scipy.stats import linregress
 import matplotlib.animation as animation
+from antDeploymentClass import *
 
+
+count = (i for i in range(2, 100))
 
 
 def make_plot_of_nest_layout():
@@ -22,32 +25,35 @@ def make_plot_of_nest_layout():
 # Running function, checks whether model has been initalised through gui or directly, then sets parameter values and initalises running of model by instantiating main class
 def f():
 	if len(sys.argv) > 1:
-		steps = int(sys.argv[2])
-		repeats = int(sys.argv[3])
-		bias_above = ast.literal_eval(sys.argv[4])
-		bias_below = ast.literal_eval(sys.argv[5])
-		forward_inertia = float(sys.argv[6])
-		backward_inertia = float(sys.argv[7])
-		vel_above = float(sys.argv[8])
-		vel_below = float(sys.argv[9])
-		verbose = bool(int(sys.argv[10]))
-		give_at_every_step = bool(int(sys.argv[11]))
-		shuffle_at_exit = bool(int(sys.argv[12]))
-		save = sys.argv[13]
-		file_name = sys.argv[14]
-		nestmates_vel = int(sys.argv[15])
-		nest_depth = int(sys.argv[16])
-		nest_height = int(sys.argv[17])
-		troph = sys.argv[18]
-		move = sys.argv[19]
-		lag_len = int(sys.argv[20])
-		nestmate_bias = bool(int(sys.argv[21]))
-		nestmate_int_rate = float(sys.argv[22])
-		parralelise = int(sys.argv[23])
+		steps = int(sys.argv[next(count)])
+		repeats = int(sys.argv[next(count)])
+		threshold = float(sys.argv[next(count)])
+		bias_above = ast.literal_eval(sys.argv[next(count)])
+		bias_below = ast.literal_eval(sys.argv[next(count)])
+		forward_inertia = float(sys.argv[next(count)])
+		backward_inertia = float(sys.argv[next(count)])
+		vel_above = float(sys.argv[next(count)])
+		vel_below = float(sys.argv[next(count)])
+		verbose = bool(int(sys.argv[next(count)]))
+		give_at_every_step = bool(int(sys.argv[next(count)]))
+		shuffle_at_exit = bool(int(sys.argv[next(count)]))
+		select_ant_deployment = bool(int(sys.argv[next(count)]))
+		save = sys.argv[next(count)]
+		file_name = sys.argv[next(count)]
+		nestmates_vel = int(sys.argv[next(count)])
+		nest_depth = int(sys.argv[next(count)])
+		nest_height = int(sys.argv[next(count)])
+		troph = sys.argv[next(count)]
+		move = sys.argv[next(count)]
+		lag_len = int(sys.argv[next(count)])
+		nestmate_bias = bool(int(sys.argv[next(count)]))
+		nestmate_int_rate = float(sys.argv[next(count)])
+		parralelise = int(sys.argv[next(count)])
 
 	else:
 		steps = 2000
 		repeats = 1
+		threshold = 0.3
 		bias_above = [0.3, 0.65, 1]
 		bias_below = [0.5, 0.75, 1]
 		forward_inertia = 0
@@ -57,11 +63,12 @@ def f():
 		verbose = True
 		give_at_every_step = False
 		shuffle_at_exit = True
+		select_ant_deployment = True
 		save = "/home/gui/Downloads/guitest"
 		file_name = "ahhh"
 		nestmates_vel = 0
-		nest_depth = 45
-		nest_height = 1
+		nest_depth = 10
+		nest_height = 10
 		troph = "Stochastic"
 		move = "Stochastic"
 		lag_len = 1
@@ -104,9 +111,14 @@ def f():
 
 
 	# Todo: make plot of the nest layout
-	make_plot_of_nest_layout()
-
-
+	if select_ant_deployment:
+		selection = AntSelection(nest_depth, nest_height)
+	else:
+		selection = AntSelection(nest_depth, nest_height, full_nest = True)
+	# print('here')
+	selection.main()
+	deployment = {'Forager': [[0,0]], 'Nestmate': selection.selected_ants}
+	number_of_ants = {'Forager': 1, 'Nestmate': len(deployment['Nestmate'])}
 
 	# print("Everything is working, yay, now to celebrate!")
 	# print('save is {}'.format(save))
@@ -126,7 +138,7 @@ def f():
 			 aver_veloc = give_at_every_step,
 			 nestmate_bias=nestmate_bias,
 			 propagate_food_rate=nestmate_int_rate, two_d=two_d,
-			 inert_nestants=inactive_nestmate)
+			 inert_nestants=inactive_nestmate, threshold=threshold, deployment = deployment, number_of_ants=number_of_ants)
 
 	# print('after running, pre data')
 

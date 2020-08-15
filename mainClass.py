@@ -14,7 +14,8 @@ class Main:
     def __init__(self, steps, inertia, f_inertial_force, b_inertial_force, bias_above, bias_below, step_sizes, repeat_no=7, save=False, verbose=False,
                  order_test=False, space_test=False, homogenise=False, nestmate_movement = False, nest_depth=45, nest_height= 1,
                  stoch_troph = True, stoch_mov = True, lag_length = 1, nestmate_bias =False, propagate_food_rate=0, two_d = False,
-                 extreme_move = False, aver_veloc=False, inert_nestants=True, multiprocessing=1):
+                 extreme_move = False, aver_veloc=False, inert_nestants=True, threshold=0.3, deployment= None, number_of_ants= None,
+                 multiprocessing=1):
         self.steps=steps
         self.inertia = inertia
         self.f_inertial_force = f_inertial_force
@@ -40,6 +41,12 @@ class Main:
         self.aver_veloc = aver_veloc
         self.step_sizes = step_sizes
         self.inert_nestants = inert_nestants
+        self.threshold=threshold
+        self.deployment = deployment
+        if number_of_ants is None:
+            self.number_of_ants = {'Forager': 1, 'Nestmate': 'all'}
+        else:
+            self.number_of_ants = number_of_ants
         pool = Pool(multiprocessing)
         # TODO: fix parralelisation
         # pool.map(self.run())
@@ -122,8 +129,6 @@ class Main:
 
         tic = time.time()
 
-        threshold =0.3
-
         for i in range(self.repeats):
             print('\t Repeat number %s' %(i+1) )
             # step_sizes = [[0.05,0],[-0.25,0]]
@@ -144,7 +149,7 @@ class Main:
             # an interaction rate defined in the nest ants class, with a value/function defined by the data
             # can do something such as a space dependent, time dependant or crop dependant
             propagate_food = self.propagate_food_rate
-            motion_thresh = threshold
+            motion_threshold = self.threshold
             ants_homogenise = self.homogenise
             nestmates_can_move = self.nestmate_movement
             lag_legnth = self.lag_length
@@ -175,18 +180,18 @@ class Main:
 
 
             if not self.two_d:
-                self.model = OneDModel(nest_depth=nest_depth, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_thresh,
-                              number_of_ants=number_of_ants, trophallaxis_method=trophallaxis_method,
+                self.model = OneDModel(nest_depth=nest_depth, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_threshold,
+                              number_of_ants=self.number_of_ants, trophallaxis_method=trophallaxis_method,
                               movement_method=movement_method, propagate_food=propagate_food, max_steps=max_steps,
-                              deployment=deployment, homogenise=ants_homogenise, nestmate_movement=nestmates_can_move,
+                              deployment=self.deployment, homogenise=ants_homogenise, nestmate_movement=nestmates_can_move,
                               forager_lag=lag_legnth, diff_test=diff_test, full_nest_ants=full_nest_ants,
                               forager_interaction_rate=interaction_rate, repeat= (i+1), verbose = self.verbose,
                                space_test = self.space_test, nestmate_bias = self.nestmate_bias, inert_nestants=self.inert_nestants)
             else:
-                self.model= TwoDModel(nest_depth=nest_depth, nest_height=nest_height, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_thresh,
-                              number_of_ants=number_of_ants, trophallaxis_method=trophallaxis_method,
+                self.model= TwoDModel(nest_depth=nest_depth, nest_height=nest_height, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_threshold,
+                              number_of_ants=self.number_of_ants, trophallaxis_method=trophallaxis_method,
                               movement_method=movement_method, propagate_food=propagate_food, max_steps=max_steps,
-                              deployment=deployment, homogenise=ants_homogenise, nestmate_movement=nestmates_can_move,
+                              deployment=self.deployment, homogenise=ants_homogenise, nestmate_movement=nestmates_can_move,
                               forager_lag=lag_legnth, diff_test=diff_test, full_nest_ants=full_nest_ants,
                               forager_interaction_rate=interaction_rate, repeat= (i+1), verbose = self.verbose,
                                space_test = self.space_test, nestmate_bias = self.nestmate_bias, inert_nestants=self.inert_nestants)

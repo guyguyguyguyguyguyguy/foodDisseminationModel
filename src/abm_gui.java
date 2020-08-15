@@ -21,12 +21,12 @@ import java.util.concurrent.Flow;
 public class abm_gui extends JFrame {
     public JTextField tfRepeats, tfSteps, tfAboveBias, tfBelowBias,
             tfFInertia, tfBInertia, tfDepth, tfHeight, tfNestMove, tfAboveVel,
-            tfBelowVel, tfNestIntRate, tfForLag;
+            tfBelowVel, tfNestIntRate, tfForLag, tfThresh;
     public JComboBox<String> tfSetUp;
     public JTextArea saveText, pythonPath, abmPath, tfparrallelize, tffileName;
     public JButton saveBut, pythonButton, abmButton;
     public JButton tfDone;
-    public JCheckBox tfInertia, tfSave, tfVerbose, tfNestBiasMov, tfShuffle, tfGiveEveryStep;
+    public JCheckBox tfInertia, tfSave, tfVerbose, tfNestBiasMov, tfShuffle, tfGiveEveryStep, tfSelectAntDeployment;
     public JList<String> tfDim, tfTroph, tfMov;
     String steps = "5000";
     String forward_inertia = "0";
@@ -37,7 +37,9 @@ public class abm_gui extends JFrame {
     String vel_below = "-0.25";
     String repeats = "2";
     String verbose = "0";
+	String selectAntDeployment = "0";
     String giveAtEveryStep = "0";
+	String threshold = "0.3";
     String save;
     String filename;
     String shuffleAtExit = "0";
@@ -102,8 +104,12 @@ public class abm_gui extends JFrame {
 
 
         JPanel fourthPanel = new JPanel();
-        fourthPanel.setLayout(new GridLayout(0, 5, 20, 10));
+        fourthPanel.setLayout(new GridLayout(0, 7, 20, 10));
         cp.add(fourthPanel);
+		fourthPanel.add(new JLabel("Forager threshold: "));
+		tfThresh = new JTextField(1);
+		tfThresh.setText(threshold);
+		fourthPanel.add(tfThresh);
         fourthPanel.add(new JLabel("Trophallaxis type: "));
         String[] tropOp = { "Stochastic", "Deterministic" };
         tfTroph = new JList<>(tropOp);
@@ -173,6 +179,8 @@ public class abm_gui extends JFrame {
         checkPanel.add(tfShuffle);
         tfGiveEveryStep = new JCheckBox("Give at every step (deterministic movement)");
         checkPanel.add(tfGiveEveryStep);
+		tfSelectAntDeployment = new JCheckBox("Choose deployment");
+		checkPanel.add(tfSelectAntDeployment);
        
 
 
@@ -273,6 +281,7 @@ public class abm_gui extends JFrame {
                 // Need to add validation to this
                 steps = tfSteps.getText();
                 repeats = tfRepeats.getText();
+				threshold = tfThresh.getText();
                 bias_above = tfAboveBias.getText();
                 bias_below = tfBelowBias.getText();
                 forward_inertia = tfFInertia.getText();
@@ -282,7 +291,8 @@ public class abm_gui extends JFrame {
                 verbose = String.valueOf(tfVerbose.isSelected() ? 1:0);
                 shuffleAtExit = String.valueOf(tfShuffle.isSelected() ? 1:0);
                 giveAtEveryStep = String.valueOf(tfGiveEveryStep.isSelected() ? 1:0);
-                save = saveText.getText();
+				selectAntDeployment = String.valueOf(tfSelectAntDeployment.isSelected() ? 1:0);                
+				save = saveText.getText();
                 filename = tffileName.getText();
                 nestmate_movement = tfNestMove.getText();
                 nest_depth = tfDepth.getText();
@@ -302,10 +312,10 @@ public class abm_gui extends JFrame {
 
                 // Run python/bash code here
                 String[] cmd = new String[]{python, abm, "from_gui", steps,
-                        repeats,
+                        repeats, threshold,
                         bias_above, bias_below, forward_inertia,
                         backward_inertia, vel_above, vel_below, verbose, giveAtEveryStep,
-                        shuffleAtExit, save
+                        shuffleAtExit, selectAntDeployment, save
                         , filename, nestmate_movement, nest_depth, nest_height,
                         troph,
                         move, lag_len, nestmate_bias, nestmate_int_rate,
@@ -322,7 +332,7 @@ public class abm_gui extends JFrame {
                     BufferedReader stdInput = new BufferedReader(new
                             InputStreamReader(p.getInputStream()));
 
-                    System.out.println("Here is the standard output of the command:\n");
+                    System.out.println("And away we gooo:\n");
                     while ((s = stdInput.readLine()) != null) {
                         System.out.println(s);
                     }
