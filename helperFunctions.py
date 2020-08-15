@@ -139,10 +139,15 @@ def nestmate_movement_limited(model, class_name, threshold, velocity, bias=False
 # Movement of nestmates in models in which they are shuffled randomly at every forager exit
 def space_model(model, class_name):
     nest_ants = get_nest_ants(model, class_name)
-    new_positions = random.sample(range(1, model.nest_depth+1), len(nest_ants))
+    if model.name == 'two_d_model':
+        new_positions = [[random.randint(1, model.nest_depth), random.randint(0, model.nest_height)] for i in range(len(nest_ants))]
+        for n, ant in enumerate(nest_ants):
+            ant.position = new_positions[n]
+    else:
+        new_positions = random.sample(range(1, model.nest_depth+1), len(nest_ants))
 
-    for n, ant in enumerate(nest_ants):
-        ant.position[0] = new_positions[n]
+        for n, ant in enumerate(nest_ants):
+            ant.position[0] = new_positions[n]
 
 # Not used
 def order_model(model, class_name):

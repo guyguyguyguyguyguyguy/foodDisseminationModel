@@ -153,7 +153,7 @@ class BaseModel(Model, Inspectable):
             positions = None
             return positions
 
-        elif 0 < self.number_of_ants[subclass] <= self.nest_depth:
+        elif 0 < self.number_of_ants[subclass] <= (self.nest_depth*self.nest_height):
             positions = self.calculate_grid_positions(subclass)
             return positions
 

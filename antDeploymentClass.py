@@ -140,7 +140,9 @@ class AntSelection:
 		for row in grid:
 			for node in row:
 				if node.is_ant():
-					self.selected_ants.append([node.row+1, node.col])
+					x = node.row +1
+					y = node.col
+					self.selected_ants.append([x, y])
 
 		pygame.quit()
 
