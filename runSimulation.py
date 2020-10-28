@@ -64,11 +64,11 @@ def f():
 		give_at_every_step = False
 		shuffle_at_exit = True
 		select_ant_deployment = True
-		save = "/home/gui/Downloads/guitest"
+		save = "/home/guy/Downloads"
 		file_name = "ahhh"
 		nestmates_vel = 0
 		nest_depth = 10
-		nest_height = 10
+		nest_height = 1
 		troph = "Stochastic"
 		move = "Stochastic"
 		lag_len = 1
@@ -110,7 +110,6 @@ def f():
 
 
 
-	# Todo: make plot of the nest layout
 	if select_ant_deployment:
 		selection = AntSelection(nest_depth, nest_height)
 	else:
@@ -120,12 +119,12 @@ def f():
 	deployment = {'Forager': [[0,0]], 'Nestmate': selection.selected_ants}
 	number_of_ants = {'Forager': 1, 'Nestmate': len(deployment['Nestmate'])}
 
-	# print("Everything is working, yay, now to celebrate!")
-	# print('save is {}'.format(save))
-	# print('steps is {}'.format(steps))
-	# print("nestmates are inhert: {}".format(inactive_nestmate))
-	# print("nest is shuffled: {}".format(shuffle_at_exit))
-	# print("step sizes: {}".format(step_sizes))
+	print("Everything is working, yay, now to celebrate!")
+	print('save is {}'.format(save))
+	print('steps is {}'.format(steps))
+	print("nestmates are inhert: {}".format(inactive_nestmate))
+	print("nest is shuffled: {}".format(shuffle_at_exit))
+	print("step sizes: {}".format(step_sizes))
 	a = Main(steps=steps, inertia=inertia, f_inertial_force=forward_inertia,
 			 b_inertial_force=backward_inertia, bias_above=bias_above,
 			 bias_below=bias_below, step_sizes=step_sizes,
@@ -146,6 +145,7 @@ def f():
 	forag = a.all_forager_data
 	visit = a.all_visit_data
 	inter = a.all_interaction_data
+        
 
 	# print('after instantiation')
 	if save:

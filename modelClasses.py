@@ -295,6 +295,9 @@ class BaseModel(Model, Inspectable):
 
 # One dimensional model class
 class OneDModel(BaseModel):
+    
+    name = 'one_d_model'
+
     def __init__(self, nest_depth, exit_size, step_sizes, motion_threshold,
                  trophallaxis_method, movement_method, propagate_food=0, number_of_ants=None, nest_height=1,
                  start_in_nest=False,
