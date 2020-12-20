@@ -136,6 +136,16 @@ def nestmate_movement_limited(model, class_name, threshold, velocity, bias=False
             ant[0].position = arena[n]
 
 
+# function that moves ant within it's Moore-neighborhood, given its velocity
+# need to work on what positions are equal or not in 2d
+# def 2d_nestmate_move(ant, new_pos, free_spaces):
+#    if new_ant_pos in free_spaces:
+#        ant.position = free_spaces
+#        free_spaces.remove(new_ant_pos)
+#    else:
+#        pass
+
+
 # Movement of nestmates in models in which they are shuffled randomly at every forager exit
 def space_model(model, class_name):
     nest_ants = get_nest_ants(model, class_name)
