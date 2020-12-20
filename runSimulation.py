@@ -52,7 +52,7 @@ def f():
 
 	else:
 		steps = 2000
-		repeats = 1
+		repeats = 10
 		threshold = 0.3
 		bias_above = [0.3, 0.65, 1]
 		bias_below = [0.5, 0.75, 1]
@@ -107,8 +107,6 @@ def f():
 		inactive_nestmate = False
 	else:
 		inactive_nestmate = True
-
-
 
 	if select_ant_deployment:
 		selection = AntSelection(nest_depth, nest_height)

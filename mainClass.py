@@ -6,6 +6,11 @@ import time
 from helperFunctions import *
 from multiprocessing import Pool
 import itertools
+from copy import deepcopy
+
+
+#Todo: find referenced parameter that is being changed during course of
+# simulation that is altering foragers starting position
 
 
 # Main class in which model is instantiated with user defined parameters
@@ -180,13 +185,15 @@ class Main:
 
 
             if not self.two_d:
-                self.model = OneDModel(nest_depth=nest_depth, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_threshold,
+                self.model = deepcopy(OneDModel(nest_depth=nest_depth,
+                                        exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_threshold,
                               number_of_ants=self.number_of_ants, trophallaxis_method=trophallaxis_method,
                               movement_method=movement_method, propagate_food=propagate_food, max_steps=max_steps,
                               deployment=self.deployment, homogenise=ants_homogenise, nestmate_movement=nestmates_can_move,
                               forager_lag=lag_legnth, diff_test=diff_test, full_nest_ants=full_nest_ants,
                               forager_interaction_rate=interaction_rate, repeat= (i+1), verbose = self.verbose,
-                               space_test = self.space_test, nestmate_bias = self.nestmate_bias, inert_nestants=self.inert_nestants)
+                               space_test = self.space_test, nestmate_bias =
+                                                self.nestmate_bias, inert_nestants=self.inert_nestants))
             else:
                 self.model= TwoDModel(nest_depth=nest_depth, nest_height=nest_height, exit_size=exit_size, step_sizes=step_sizes, motion_threshold=motion_threshold,
                               number_of_ants=self.number_of_ants, trophallaxis_method=trophallaxis_method,
